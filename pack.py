@@ -1,4 +1,6 @@
 from rectpack import newPacker
+import sys
+import os
 
 
 class BinSegment:
@@ -7,7 +9,7 @@ class BinSegment:
         self.count = 1
 
 
-def AddBinSeg(binSeg):
+def AddBinSeg(binSeg, binSolution):
     for i in range(len(binSolution)):
         if(binSolution[i].bin == binSeg):
             binSolution[i].count += 1
@@ -38,44 +40,50 @@ def WriteResult(filePath, binSolution):
                              "," + str(rect[3]) + "," + str(rect[4]) + "\n")
 
 
-binSolution = []
-rectangles = LoadInputRectangles("data/sample.in")
-bins = [(100, 100, float("inf"))]
+def RunPack(binWidth, binHeight, inputFilePath, outputFilePath):
+    binSolution = []
+    rectangles = LoadInputRectangles(inputFilePath)
+    bins = [(binWidth, binHeight, float("inf"))]
 
-packer = newPacker()
+    packer = newPacker()
 
-# Add the rectangles to packing queue
-for r in rectangles:
-    packer.add_rect(*r)
+    # Add the rectangles to packing queue
+    for r in rectangles:
+        packer.add_rect(*r)
 
-# Add the bins where the rectangles will be placed
-for b in bins:
-    packer.add_bin(*b)
+    # Add the bins where the rectangles will be placed
+    for b in bins:
+        packer.add_bin(*b)
 
-# Start packing
-packer.pack()
+    # Start packing
+    packer.pack()
+
+    for abin in packer:
+        binSeg = []
+        for rect in abin:
+            binSeg.append([rect.x, rect.y, rect.width, rect.height, rect.rid])
+        binSeg.sort()
+        AddBinSeg(binSeg, binSolution)
+
+    binCount = 0
+    for binSeg in binSolution:
+        print binSeg.count
+        print binSeg.bin
+        print '***********'
+        binCount += binSeg.count
+
+    actualSize = 0.0
+    for rect in rectangles:
+        actualSize += rect[0] * rect[1]
+
+    totalSize = 1.0 * binWidth * binHeight * binCount
+    print "ratio = " + str(actualSize / totalSize)
+    WriteResult(outputFilePath, binSolution)
 
 
-for abin in packer:
-    binSeg = []
-    for rect in abin:
-        binSeg.append([rect.x, rect.y, rect.width, rect.height, rect.rid])
-    binSeg.sort()
-    AddBinSeg(binSeg)
-
-binCount = 0
-for binSeg in binSolution:
-    print binSeg.count
-    print binSeg.bin
-    print '***********'
-    binCount += binSeg.count
-
-actualSize = 0.0
-for rect in rectangles:
-    actualSize += rect[0] * rect[1]
-
-totalSize = 1.0 * 100 * 100 * binCount
-
-print "ratio = " + str(actualSize / totalSize)
-
-WriteResult("data/sample.out", binSolution)
+if __name__ == "__main__":
+    binWidth = int(sys.argv[1])
+    binHeight = int(sys.argv[2])
+    inputFilePath = sys.argv[3]
+    outputFilePath = inputFilePath + ".out"
+    RunPack(binWidth, binHeight, inputFilePath, outputFilePath)
