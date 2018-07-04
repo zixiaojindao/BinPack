@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -82,7 +83,19 @@ export default {
       rheight = "";
       rnumber = "";
     },
-    summit() {}
+    summit() {
+      axios
+        .post("/api/user", {
+          firstName: "Fred",
+          lastName: "Flintstone"
+        })
+        .then(function(response) {
+          console.log(response);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   }
 };
 </script>
