@@ -41,8 +41,8 @@
     </el-table-column>
   </el-table>
       <p style="text-align: center; margin-top:100px">标准板材规格</p>
-      <div class="rectPara">宽度(cm)<el-input class="rectPara" v-model="swidth" prefix="宽度"></el-input></div>
-      <div class="rectPara">高度(cm)<el-input class="rectPara" v-model="swidth" prefix="宽度"></el-input></div>
+      <div class="rectPara">宽度(cm)<el-input class="rectPara" v-model="bwidth" prefix="宽度"></el-input></div>
+      <div class="rectPara">高度(cm)<el-input class="rectPara" v-model="bheight" prefix="高度"></el-input></div>
       <el-button class="rectPara" type="primary" @click="summit">获取分割方案</el-button>
     </div>
 
@@ -59,7 +59,8 @@ export default {
       rwidth: "",
       rheight: "",
       rnumber: "",
-      swidth: "190",
+      bwidth: "190",
+      bheight: "190",
       rectTable: [
         {
           rwidth: "50",
@@ -84,13 +85,14 @@ export default {
       rnumber = "";
     },
     summit() {
+      let self = this;
       axios
-        .post("/api/user", {
-          firstName: "Fred",
-          lastName: "Flintstone"
+        .post("/api/binPack", {
+          binRects: this.rectTable,
+          bins: { bwidth: self.bwidth, bheight: self.bwidth }
         })
         .then(function(response) {
-          console.log(response);
+          console.log(response.data.name);
         })
         .catch(function(error) {
           console.log(error);
