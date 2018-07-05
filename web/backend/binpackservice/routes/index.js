@@ -24,15 +24,18 @@ function GetInputString(binRects) {
 }
 
 function ParseOutPut(foutpath) {
+  console.log(foutpath);
   var fs = require("fs");
   var lines = fs
     .readFileSync(foutpath)
     .toString()
     .split("\n");
+  console.log(lines);
   let length = parseInt(lines[0]);
   let index = 1;
   let binData = [];
   for (let i = 0; i < length; ++i) {
+    console.log(lines[i]);
     let words = lines[index].split(",");
     let rcount = words[0]; //rectangles count
     let bcount = words[1]; //bin count
@@ -54,20 +57,48 @@ function ParseOutPut(foutpath) {
   return binData;
 }
 
-//user login
-router.post("/binPack", function(req, res, next) {
-  console.log(req.body.binRects);
+function RunPython(finpath, bins) {
+  console.log("bin" + bins.bwidth);
+  console.log(finpath);
+  try {
+    var spawn = require("child_process").spawn;
+    var pythonProcess = spawn("python", [
+      "pack.py",
+      bins.bwidth.toString(),
+      bins.bheight.toString(),
+      finpath
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function RunPack(binRects, bins) {
+  console.log(binRects);
   //console.log(req.body.bins);
-  let inputString = GetInputString(req.body.binRects);
+  let inputString = GetInputString(binRects);
   console.log("res:" + inputString);
   var fs = require("fs");
   const uuidV4 = require("uuid/v4");
   let finpath = "data/" + uuidV4() + ".in";
   let foutpath = finpath + ".out";
   fs.writeFileSync(finpath, inputString);
-  let binData = ParseOutPut("data/sample.out");
+
+  RunPython(finpath, bins);
+
+  let binData = ParseOutPut(foutpath);
   console.log(binData);
-  res.send({ binData: binData });
+  return binData;
+}
+
+//user login
+router.post("/binPack", function(req, res, next) {
+  try {
+    binData = RunPack(req.body.binRects, req.body.bins);
+    res.send({ binData: binData });
+  } catch (error) {
+    console.log(error.toString());
+  }
 });
 
 module.exports = router;

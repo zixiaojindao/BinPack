@@ -21,8 +21,9 @@ def LoadInputRectangles(filePath):
     rects = []
     with open(filePath) as f:
         for line in f:
-            (width, height, id) = line.strip().split(",")
-            rects.append((int(width), int(height), int(id)))
+            (width, height, count, id) = line.strip().split(",")
+            for i in range(int(count)):
+                rects.append((int(width), int(height), int(id)))
     return rects
 
 
