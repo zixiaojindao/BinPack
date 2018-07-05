@@ -92,7 +92,7 @@ export default {
           bins: { bwidth: self.bwidth, bheight: self.bwidth }
         })
         .then(function(response) {
-          console.log(response.data.name);
+          console.log(response.data.binData);
         })
         .catch(function(error) {
           console.log(error);
