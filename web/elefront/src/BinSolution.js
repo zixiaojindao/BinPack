@@ -44,16 +44,21 @@ export default class BinSolution {
   }
 
   drawBin(binDataItem, ctx) {
-    this.drawInnerRect(0, 0, this.binWidth, this.binHeight, ctx);
+    this.drawInnerRect(0, 0, this.binWidth, this.binHeight, ctx, false);
     this.drawTips(0, 0, binDataItem, ctx);
   }
 
-  drawInnerRect(x, y, width, height, ctx) {
-    x = (x + this.startX) * this.scale;
-    y = (y + this.startY) * this.scale;
-    width = width * this.scale;
-    height = height * this.scale;
-    ctx.rect(x, y, width, height);
+  drawInnerRect(x, y, width, height, ctx, centerTips = true) {
+    let fx = (x + this.startX) * this.scale;
+    let fy = (y + this.startY) * this.scale;
+    let fwidth = width * this.scale;
+    let fheight = height * this.scale;
+    ctx.rect(fx, fy, fwidth, fheight);
     ctx.stroke();
+    if (centerTips) {
+      let centerx = fx + fwidth / 2;
+      let centery = fy + fheight / 2;
+      ctx.fillText(width + "*" + height, centerx, centery);
+    }
   }
 }

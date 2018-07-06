@@ -9,7 +9,7 @@
          <el-table
     :data="rectTable"
     style="width: 100%"
-    max-height="250">
+    max-height="300">
      <el-table-column
       fixed
       prop="rid"
