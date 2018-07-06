@@ -12,7 +12,7 @@ $(document).ready(function() {
     }
 
     init() {
-      let binSegCount = binData.length;
+      let binSegCount = this.binData.length;
       this.canvasWidth = window.innerWidth;
       this.canvasHeight =
         binSegCount * (this.binHeight + this.sepHeight) * this.scale + 300;
@@ -24,7 +24,7 @@ $(document).ready(function() {
       let ctx = c.getContext("2d");
       c.width = this.canvasWidth;
       c.height = this.canvasHeight;
-      for (let i = 0, leni = binData.length; i < leni; i++) {
+      for (let i = 0, leni = this.binData.length; i < leni; i++) {
         this.drawBin(ctx);
         let binSeg = binData[i].bin;
         for (let j = 0, lenj = binSeg.length; j < lenj; j++) {
