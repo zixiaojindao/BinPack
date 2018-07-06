@@ -60,17 +60,14 @@ function ParseOutPut(foutpath) {
 function RunPython(finpath, bins) {
   console.log("bin" + bins.bwidth);
   console.log(finpath);
-  try {
-    var spawn = require("child_process").spawn;
-    var pythonProcess = spawn("python", [
-      "pack.py",
-      bins.bwidth.toString(),
-      bins.bheight.toString(),
-      finpath
-    ]);
-  } catch (error) {
-    console.log(error);
-  }
+
+  var spawnSync = require("child_process").spawnSync;
+  var pythonProcess = spawnSync("python", [
+    "pack.py",
+    bins.bwidth.toString(),
+    bins.bheight.toString(),
+    finpath
+  ]);
 }
 
 function RunPack(binRects, bins) {
