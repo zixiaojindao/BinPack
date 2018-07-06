@@ -17,7 +17,7 @@ function GetInputString(binRects) {
       "," +
       binRect.rnumber +
       "," +
-      (i + 1) +
+      binRect.rid +
       "\n";
   }
   return res;
