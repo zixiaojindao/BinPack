@@ -46,8 +46,9 @@
       <el-button class="rectPara" type="primary" @click="summit">获取分割方案</el-button>
     </div>
 
-     
-    <canvas id="result"></canvas>
+    <div class="result">
+      <canvas id="result"></canvas>
+    </div>
   </div>
 </template>
 
@@ -174,5 +175,9 @@ label {
   clear: both;
   float: left;
   margin-right: 15px;
+}
+.result {
+  position: absolute;
+  top: 0px;
 }
 </style>
