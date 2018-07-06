@@ -24,8 +24,8 @@ export default class BinSolution {
     c.width = this.canvasWidth;
     c.height = this.canvasHeight;
     for (let i = 0, leni = this.binData.length; i < leni; i++) {
-      this.drawBin(ctx);
       let binSeg = this.binData[i].bin;
+      this.drawBin(this.binData[i], ctx);
       for (let j = 0, lenj = binSeg.length; j < lenj; j++) {
         let rect = binSeg[j];
         this.drawInnerRect(rect.x, rect.y, rect.width, rect.height, ctx);
@@ -34,8 +34,18 @@ export default class BinSolution {
     }
   }
 
-  drawBin(ctx) {
+  drawTips(x, y, binDataItem, ctx) {
+    x = (x + this.binWidth + 20 + this.startX) * this.scale;
+    y = (y + this.binHeight + this.startY) * this.scale;
+    let oldfont = ctx.font;
+    ctx.font = "20px Georgia";
+    ctx.fillText(binDataItem.count + "个", x, y);
+    ctx.font = oldfont;
+  }
+
+  drawBin(binDataItem, ctx) {
     this.drawInnerRect(0, 0, this.binWidth, this.binHeight, ctx);
+    this.drawTips(0, 0, binDataItem, ctx);
   }
 
   drawInnerRect(x, y, width, height, ctx) {
