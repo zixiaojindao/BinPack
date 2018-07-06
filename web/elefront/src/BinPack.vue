@@ -10,11 +10,17 @@
     :data="rectTable"
     style="width: 100%"
     max-height="250">
+     <el-table-column
+      fixed
+      prop="rid"
+      label="序号"
+      width="100">
+    </el-table-column>
     <el-table-column
       fixed
       prop="rwidth"
       label="宽度(cm)"
-      width="150">
+      width="100">
     </el-table-column>
     <el-table-column
       prop="rheight"
@@ -113,24 +119,33 @@ export default {
       bheight: "190",
       rectTable: [
         {
+          rid: "1",
           rwidth: "50",
           rheight: "30",
           rnumber: "2"
         },
         {
+          rid: "2",
           rwidth: "50",
-          rheight: "30",
+          rheight: "70",
           rnumber: "100"
         }
       ]
     };
   },
   methods: {
+    reOrder() {
+      for (let i = 0; i < this.rectTable.length; ++i) {
+        this.rectTable[i].rid = (i + 1).toString();
+      }
+    },
     deleteRow(index, rows) {
       rows.splice(index, 1);
+      this.reOrder();
     },
     addRect() {
       this.rectTable.push({
+        rid: "",
         rwidth: this.rwidth,
         rheight: this.rheight,
         rnumber: this.rnumber
@@ -138,6 +153,7 @@ export default {
       this.rwidth = "";
       this.rheight = "";
       this.rnumber = "";
+      this.reOrder();
     },
     summit() {
       let self = this;
