@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display:flex">
     <div class="leftInput">
         <p style="text-align: center">请输入板材需求</p>
         <el-input class="rectPara" v-model="rwidth" placeholder="宽度"></el-input>
@@ -116,6 +116,11 @@ export default {
           rwidth: "50",
           rheight: "30",
           rnumber: "2"
+        },
+        {
+          rwidth: "50",
+          rheight: "30",
+          rnumber: "100"
         }
       ]
     };
@@ -130,9 +135,9 @@ export default {
         rheight: this.rheight,
         rnumber: this.rnumber
       });
-      rwidth = "";
-      rheight = "";
-      rnumber = "";
+      this.rwidth = "";
+      this.rheight = "";
+      this.rnumber = "";
     },
     summit() {
       let self = this;
@@ -145,8 +150,8 @@ export default {
           console.log(response.data.binData);
           let binData = response.data.binData;
           let binSolution = new BinSolution(
-            500,
-            20,
+            0,
+            0,
             binData,
             parseInt(self.bwidth),
             parseInt(self.bheight)
@@ -177,7 +182,6 @@ label {
   margin-right: 15px;
 }
 .result {
-  position: absolute;
-  top: 0px;
+  margin-left: 200px;
 }
 </style>
