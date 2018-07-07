@@ -1,5 +1,5 @@
 <template>
-  <div style="display:flex">
+  <div style="display:flex" v-loading="loading">
     <div class="leftInput">
         <p style="text-align: center">请输入板材需求</p>
         <el-input class="rectPara" v-model="rwidth" placeholder="宽度"></el-input>
@@ -69,6 +69,7 @@ export default {
       rnumber: "",
       bwidth: "190",
       bheight: "190",
+      loading: false,
       rectTable: [
         {
           rid: "1",
@@ -109,6 +110,7 @@ export default {
     },
     summit() {
       let self = this;
+      self.loading = true;
       axios
         .post("/api/binPack", {
           binRects: this.rectTable,
@@ -125,9 +127,11 @@ export default {
             parseInt(self.bheight)
           );
           binSolution.draw();
+          self.loading = false;
         })
         .catch(function(error) {
           console.log(error);
+          self.loading = false;
         });
     }
   }

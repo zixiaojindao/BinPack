@@ -12,7 +12,7 @@ export default class BinSolution {
 
   init() {
     let binSegCount = this.binData.length;
-    this.canvasWidth = window.innerWidth;
+    this.canvasWidth = this.binWidth * this.scale + 200;
     this.canvasHeight =
       binSegCount * (this.binHeight + this.sepHeight) * this.scale + 300;
   }
