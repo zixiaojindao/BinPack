@@ -95,6 +95,7 @@ router.post("/binPack", function(req, res, next) {
     res.send({ binData: binData });
   } catch (error) {
     console.log(error.toString());
+    res.send({ binData: "" });
   }
 });
 

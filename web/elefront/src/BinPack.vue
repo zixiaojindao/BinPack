@@ -1,5 +1,5 @@
 <template>
-  <div style="display:flex" v-loading="loading">
+  <div style="display:flex" v-loading="loading" element-loading-text="正在云端计算...">
     <div class="leftInput">
         <p style="text-align: center">请输入板材需求</p>
         <el-input class="rectPara" v-model="rwidth" placeholder="宽度"></el-input>
@@ -53,6 +53,7 @@
     </div>
 
     <div class="result">
+      <div class="summary">{{summary}}</div>
       <canvas id="result"></canvas>
     </div>
   </div>
@@ -70,6 +71,7 @@ export default {
       bwidth: "190",
       bheight: "190",
       loading: false,
+      summary: "",
       rectTable: [
         {
           rid: "1",
@@ -113,6 +115,32 @@ export default {
       let ctx = c.getContext("2d");
       ctx.clearRect(0, 0, c.width, c.height);
       c.height = 0;
+      this.summary = "";
+    },
+    setSummary(binData) {
+      let totalCount = 0;
+      let ratio = 0.0;
+      let actualSize = 0.0;
+      for (let i = 0, len = binData.length; i < len; i++) {
+        totalCount += binData[i].count;
+      }
+      for (let i = 0, len = this.rectTable.length; i < len; i++) {
+        actualSize +=
+          1.0 *
+          parseInt(this.rectTable[i].rwidth) *
+          parseInt(this.rectTable[i].rheight) *
+          parseInt(this.rectTable[i].rnumber);
+      }
+      ratio =
+        actualSize /
+        (totalCount * parseInt(this.bwidth) * parseInt(this.bheight));
+
+      this.summary =
+        "您需要采购" +
+        totalCount +
+        "个标准板材,板材利用率为" +
+        (ratio * 100).toFixed(0) +
+        "%";
     },
     summit() {
       let self = this;
@@ -121,7 +149,7 @@ export default {
       axios
         .post("/api/binPack", {
           binRects: this.rectTable,
-          bins: { bwidth: self.bwidth, bheight: self.bwidth }
+          bins: { bwidth: self.bwidth, bheight: self.bheight }
         })
         .then(function(response) {
           console.log(response.data.binData);
@@ -133,6 +161,7 @@ export default {
             parseInt(self.bwidth),
             parseInt(self.bheight)
           );
+          self.setSummary(binData);
           binSolution.draw();
           self.loading = false;
         })
@@ -162,5 +191,9 @@ label {
 }
 .result {
   margin-left: 200px;
+  margin-top: 16px;
+}
+.summary {
+  margin-bottom: 10px;
 }
 </style>
