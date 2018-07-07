@@ -2,10 +2,10 @@
   <div style="display:flex" v-loading="loading" element-loading-text="正在云端计算...">
     <div class="leftInput">
         <p style="text-align: center">请输入板材需求</p>
-        <el-input class="rectPara" v-model="rwidth" placeholder="宽度"></el-input>
-        <el-input class="rectPara" v-model="rheight" placeholder="高度"></el-input>
-        <el-input class="rectPara" v-model="rnumber" placeholder="数量"></el-input>
-        <el-button class="rectPara" type="primary" @click="addRect">添加</el-button>
+        <el-input class="rectPara" type="number" v-model="rwidth" placeholder="宽度"></el-input>
+        <el-input class="rectPara" type="number" v-model="rheight" placeholder="高度"></el-input>
+        <el-input class="rectPara" type="number" v-model="rnumber" placeholder="数量"></el-input>
+        <el-button class="rectPara"  type="primary" @click="addRect">添加</el-button>
          <el-table
     :data="rectTable"
     style="width: 100%"
@@ -47,8 +47,8 @@
     </el-table-column>
   </el-table>
       <p style="text-align: center; margin-top:100px">标准板材规格</p>
-      <div class="rectPara">宽度(cm)<el-input class="rectPara" v-model="bwidth" prefix="宽度"></el-input></div>
-      <div class="rectPara">高度(cm)<el-input class="rectPara" v-model="bheight" prefix="高度"></el-input></div>
+      <div class="rectPara">宽度(cm)<el-input class="rectPara" type="number" v-model="bwidth" prefix="宽度"></el-input></div>
+      <div class="rectPara">高度(cm)<el-input class="rectPara" type="number" v-model="bheight" prefix="高度"></el-input></div>
       <el-button class="rectPara" type="primary" @click="summit">获取分割方案</el-button>
     </div>
 
@@ -195,5 +195,12 @@ label {
 }
 .summary {
   margin-bottom: 10px;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 </style>
