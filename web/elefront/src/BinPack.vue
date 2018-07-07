@@ -108,9 +108,16 @@ export default {
       this.rnumber = "";
       this.reOrder();
     },
+    clearResult() {
+      let c = document.getElementById("result");
+      let ctx = c.getContext("2d");
+      ctx.clearRect(0, 0, c.width, c.height);
+      c.height = 0;
+    },
     summit() {
       let self = this;
       self.loading = true;
+      self.clearResult();
       axios
         .post("/api/binPack", {
           binRects: this.rectTable,
